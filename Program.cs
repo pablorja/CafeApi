@@ -162,6 +162,9 @@ builder.Services.AddScoped<ICartRepository>(_ =>
 builder.Services.AddScoped<IUserRepository>(_ =>
   new UserRepository(connectionString));
 
+builder.Services.AddScoped<IOrderRepository>(_ =>
+    new OrderRepository(connectionString));
+
 // ✅ Conservamos OpenAPI nativo.
 builder.Services.AddOpenApi();
 
@@ -178,6 +181,8 @@ if (app.Environment.IsDevelopment())
     // ✅ Interfaz gráfica Swagger.
     app.UseSwaggerUI();
 }
+
+
 
 // ✅ Middleware global de excepciones.
 // Captura errores no controlados en toda la aplicación.
