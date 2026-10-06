@@ -520,6 +520,39 @@ POST /api/cafes
 
 La base de datos únicamente almacena la URL de la imagen.
 
+## 🛒 Módulo de Carrito
+
+El sistema incluye un carrito de compras persistente asociado a cada usuario autenticado.
+
+### Funcionalidades implementadas
+
+✅ Obtener carrito actual
+
+✅ Agregar productos al carrito
+
+✅ Actualizar cantidad de productos
+
+✅ Eliminar un producto específico
+
+✅ Vaciar completamente el carrito
+
+✅ Cálculo automático de subtotales
+
+✅ Cálculo automático del total
+
+✅ Validación de stock disponible
+
+✅ Protección mediante JWT
+
+✅ Validación de propiedad del carrito
+
+### Endpoints
+
+#### Obtener carrito
+
+http
+GET /api/cart
+
 
 ## 👨‍💻 Autor
  

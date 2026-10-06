@@ -460,3 +460,53 @@ permanece reservada para autenticación interna de Supabase.
 
 - Registro de Cloudinary en Program.cs.
 - Preparado para integración con Angular.
+
+---
+
+## [1.11.0] - 2026-09-26
+
+### 🚀 Añadido
+
+#### Módulo Carrito
+
+Implementación completa del primer MVP del carrito de compras.
+
+#### Controladores
+
+- CartController
+
+#### DTOs
+
+- AddCartItemDto
+- UpdateCartItemDto
+- CartResponseDto
+- CartItemResponseDto
+
+#### Repositorios
+
+- ICartRepository
+- CartRepository
+
+#### Endpoints
+
+- GET /api/cart
+- POST /api/cart/items
+- PUT /api/cart/items/{id}
+- DELETE /api/cart/items/{id}
+- DELETE /api/cart
+
+### ✅ Funcionalidades
+
+#### Obtener carrito
+
+Permite consultar el carrito activo asociado al usuario autenticado.
+
+#### Agregar productos
+
+Permite agregar cafés al carrito utilizando:
+
+```json
+{
+  "cafeId": 1,
+  "cantidad": 2
+}

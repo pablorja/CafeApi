@@ -32,5 +32,11 @@ namespace CafeApi.Interfaces
         Task<bool> ClearCartAsync(
             int userId
         );
+
+        Task<bool> ItemBelongsToUserAsync(
+           int cartItemId,
+           int userId
+        );
+
     }
 }
