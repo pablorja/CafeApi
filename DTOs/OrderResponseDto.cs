@@ -12,6 +12,7 @@
 
         public decimal Total { get; set; }
 
+        // ✅ Observaciones del pedido.
         public string Observaciones { get; set; }
             = string.Empty;
 

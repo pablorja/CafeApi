@@ -30,13 +30,12 @@ namespace CafeApi.Repositories
 
             try
             {
-                // ✅ Buscar carrito activo.
+                // ✅ Buscar carrito.
                 await using var cartCommand =
                     new NpgsqlCommand(
                         @"SELECT id
                           FROM public.carts
                           WHERE user_id = @userId
-                          AND estado = 'Activo'
                           LIMIT 1;",
                         connection,
                         transaction);
@@ -56,7 +55,7 @@ namespace CafeApi.Repositories
                 var cartId =
                     Convert.ToInt32(cartIdResult);
 
-                // ✅ Obtener items.
+                // ✅ Obtener productos.
                 await using var itemsCommand =
                     new NpgsqlCommand(
                         @"SELECT
@@ -66,7 +65,7 @@ namespace CafeApi.Repositories
                             ci.cantidad
                           FROM public.cart_items ci
                           INNER JOIN public.cafes c
-                            ON c.id = ci.cafe_id
+                             ON c.id = ci.cafe_id
                           WHERE ci.cart_id = @cartId;",
                         connection,
                         transaction);
@@ -85,12 +84,6 @@ namespace CafeApi.Repositories
 
                 while (await reader.ReadAsync())
                 {
-                    var cafeId =
-                        reader.GetInt32(0);
-
-                    var nombre =
-                        reader.GetString(1);
-
                     var precio =
                         reader.GetDecimal(2);
 
@@ -105,16 +98,26 @@ namespace CafeApi.Repositories
                     items.Add(
                         new OrderItemResponseDto
                         {
-                            CafeId = cafeId,
-                            CafeNombre = nombre,
-                            PrecioUnitario = precio,
-                            Cantidad = cantidad,
-                            Subtotal = subtotal
+                            CafeId =
+                                reader.GetInt32(0),
+
+                            CafeNombre =
+                                reader.GetString(1),
+
+                            PrecioUnitario =
+                                precio,
+
+                            Cantidad =
+                                cantidad,
+
+                            Subtotal =
+                                subtotal
                         });
                 }
 
                 await reader.CloseAsync();
 
+                // ✅ Carrito vacío.
                 if (!items.Any())
                 {
                     return null;
@@ -128,6 +131,7 @@ namespace CafeApi.Repositories
                             user_id,
                             total,
                             estado,
+                            observaciones,
                             fecha_creacion
                         )
                         VALUES
@@ -135,6 +139,7 @@ namespace CafeApi.Repositories
                             @userId,
                             @total,
                             'PendientePago',
+                            @observaciones,
                             CURRENT_TIMESTAMP
                         )
                         RETURNING id;",
@@ -149,16 +154,20 @@ namespace CafeApi.Repositories
                     "total",
                     total);
 
+                orderCommand.Parameters.AddWithValue(
+                    "observaciones",
+                    observaciones);
+
                 var orderIdResult =
                     await orderCommand.ExecuteScalarAsync();
 
                 var orderId =
                     Convert.ToInt32(orderIdResult);
 
-                // ✅ Crear detalle del pedido.
+                // ✅ Crear detalle.
                 foreach (var item in items)
                 {
-                    await using var detailCommand =
+                    await using var itemCommand =
                         new NpgsqlCommand(
                             @"INSERT INTO public.order_items
                             (
@@ -179,27 +188,27 @@ namespace CafeApi.Repositories
                             connection,
                             transaction);
 
-                    detailCommand.Parameters.AddWithValue(
+                    itemCommand.Parameters.AddWithValue(
                         "orderId",
                         orderId);
 
-                    detailCommand.Parameters.AddWithValue(
+                    itemCommand.Parameters.AddWithValue(
                         "cafeId",
                         item.CafeId);
 
-                    detailCommand.Parameters.AddWithValue(
+                    itemCommand.Parameters.AddWithValue(
                         "cantidad",
                         item.Cantidad);
 
-                    detailCommand.Parameters.AddWithValue(
+                    itemCommand.Parameters.AddWithValue(
                         "precioUnitario",
                         item.PrecioUnitario);
 
-                    detailCommand.Parameters.AddWithValue(
+                    itemCommand.Parameters.AddWithValue(
                         "subtotal",
                         item.Subtotal);
 
-                    await detailCommand.ExecuteNonQueryAsync();
+                    await itemCommand.ExecuteNonQueryAsync();
                 }
 
                 // ✅ Vaciar carrito.
@@ -221,12 +230,26 @@ namespace CafeApi.Repositories
 
                 return new OrderResponseDto
                 {
-                    OrderId = orderId,
-                    UserId = userId,
-                    Estado = "PendientePago",
-                    Total = total,
-                    FechaCreacion = DateTime.UtcNow,
-                    Items = items
+                    OrderId =
+                        orderId,
+
+                    UserId =
+                        userId,
+
+                    Estado =
+                        "PendientePago",
+
+                    Total =
+                        total,
+
+                    Observaciones =
+                        observaciones,
+
+                    FechaCreacion =
+                        DateTime.UtcNow,
+
+                    Items =
+                        items
                 };
             }
             catch
@@ -236,7 +259,7 @@ namespace CafeApi.Repositories
             }
         }
 
-        // ✅ Obtener pedidos de un usuario.
+        // ✅ Obtener historial de pedidos.
         public async Task<IEnumerable<OrderResponseDto>>
             GetOrdersByUserIdAsync(
                 int userId)
@@ -252,6 +275,7 @@ namespace CafeApi.Repositories
                         id,
                         total,
                         estado,
+                        observaciones,
                         fecha_creacion
                       FROM public.orders
                       WHERE user_id = @userId
@@ -285,15 +309,20 @@ namespace CafeApi.Repositories
                         Estado =
                             reader.GetString(2),
 
+                        Observaciones =
+                            reader.IsDBNull(3)
+                            ? string.Empty
+                            : reader.GetString(3),
+
                         FechaCreacion =
-                            reader.GetDateTime(3)
+                            reader.GetDateTime(4)
                     });
             }
 
             return orders;
         }
 
-        // ✅ Obtener pedido individual.
+        // ✅ Obtener pedido específico.
         public async Task<OrderResponseDto?> GetOrderByIdAsync(
             int orderId,
             int userId)
@@ -309,6 +338,7 @@ namespace CafeApi.Repositories
                         id,
                         total,
                         estado,
+                        observaciones,
                         fecha_creacion
                       FROM public.orders
                       WHERE id = @orderId
@@ -346,8 +376,13 @@ namespace CafeApi.Repositories
                     Estado =
                         reader.GetString(2),
 
+                    Observaciones =
+                        reader.IsDBNull(3)
+                        ? string.Empty
+                        : reader.GetString(3),
+
                     FechaCreacion =
-                        reader.GetDateTime(3)
+                        reader.GetDateTime(4)
                 };
 
             await reader.CloseAsync();

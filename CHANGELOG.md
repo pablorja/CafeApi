@@ -505,7 +505,7 @@ Permite consultar el carrito activo asociado al usuario autenticado.
 
 Permite agregar cafés al carrito utilizando:
 
-```json
+json
 {
   "cafeId": 1,
   "cantidad": 2
