@@ -22,5 +22,12 @@ namespace CafeApi.Interfaces
             int orderId,
             int userId
         );
+
+        // ✅ Actualizar estado del pedido.
+        Task<bool> UpdateStatusAsync(
+        int orderId,
+        int userId,
+        string estado
+        );
     }
 }

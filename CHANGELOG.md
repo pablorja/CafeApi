@@ -1,512 +1,316 @@
-# Changelog
+---
 
-Todos los cambios importantes de este proyecto serán documentados aquí.
+## [2.0.0] - 2026-09-26
 
-El formato está basado en Keep a Changelog.
+### 🚀 Añadido
+
+## Ecommerce Core
+
+Implementación completa del flujo principal de ecommerce.
+
+
+Catálogo
+ ↓
+Carrito
+ ↓
+Pedido
+ ↓
+Checkout
+ ↓
+Pago
+ ↓
+Estado del Pedido
+
 
 ---
 
-## [1.0.0] - 2026-09-26
-
-### 🚀 Añadido
-
-- API REST desarrollada con ASP.NET Core 10.
-- Implementación de repositorios para Cafés y Especialidades.
-- Interfaces para desacoplar la capa de acceso a datos.
-- Configuración de CORS para futuras integraciones con Angular.
-- Configuración de autenticación JWT.
-- Diagnóstico seguro de conexión en Program.cs.
-- Archivo README.md para documentación del proyecto.
-
-### 🗄️ Base de Datos
-
-- Integración con PostgreSQL.
-- Integración con Supabase.
-- Configuración de Npgsql como proveedor de acceso a datos.
-- Configuración de cadenas de conexión mediante appsettings.Development.json.
-
-### 🔄 Migración
-
-- Migración desde MySQL local.
-- Eliminación de dependencias heredadas de Clever Cloud.
-- Reemplazo de MySqlConnector por Npgsql.
-- Actualización de repositorios para trabajar con PostgreSQL.
-
-### ✅ CRUD Validado
-
-#### Cafés
-
-- GET /api/cafes
-- GET /api/cafes/{id}
-- POST /api/cafes
-- PUT /api/cafes/{id}
-- DELETE /api/cafes/{id}
-
-#### Especialidades
-
-- GET /api/especialidades
-
-### 🛠️ Corregido
-
-- Eliminada la configuración antigua almacenada en User Secrets.
-- Corrección de conflictos entre MySQL local y PostgreSQL Supabase.
-- Corrección del error de conexión SSL.
-- Eliminado warning MSB3884 relacionado con MinimumRecommendedRules.ruleset.
-- Limpieza del archivo CafeApi.csproj.
-
-### 🔍 Aprendizajes Técnicos
-
-- Uso de dotnet user-secrets para depuración de configuraciones.
-- Diagnóstico de cadenas de conexión en ASP.NET Core.
-- Configuración de entornos Development y Production.
-- Migración de motores de base de datos sin afectar la arquitectura del proyecto.
-
-### 📌 Estado Actual
-
-- ✅ CRUD Cafés funcionando.
-- ✅ CRUD Especialidades funcionando.
-- ✅ PostgreSQL funcionando.
-- ✅ Supabase funcionando.
-- ✅ Npgsql funcionando.
-- ✅ API validada mediante Postman.
-
-
-### Seguridad
-
-Se implementaron dos roles:
-
-#### Administrador
-
-Acceso completo a operaciones CRUD.
-
-#### Cliente
-
-Acceso limitado a lectura y creación de registros.
-
-#### Validaciones realizadas
-
-- ✅ JWT Authentication
-- ✅ Role-Based Authorization
-- ✅ 401 Unauthorized
-- ✅ 403 Forbidden
-
-### 🚧 Próximos Pasos
-
--
-- Integrar Google Sign-In.
-- Conectar Angular con CafeApi.
-- Implementar roles y autorización.
-- Documentar endpoints.
-- Despliegue en producción.
-
-## [1.2.0] - 2026-09-25
- 
-### 🚀 Añadido
- 
-- Swagger UI.
-- OpenAPI Documentation.
-- JWT Authentication.
-- Endpoint POST /api/auth/login.
-- Roles Administrador y Cliente.
-- Role-Based Authorization.
- 
-### 🔐 Seguridad
- 
-Administrador:
- 
-- GET
-- POST
-- PUT
-- DELETE
- 
-Cliente:
- 
-- GET
-- POST
-- PUT (403 Forbidden)
-- DELETE (403 Forbidden)
- 
-### ✅ Validado
- 
-JWT Authentication:
- 
-- ✅ Generación de Token
-- ✅ Bearer Token
-- ✅ Claims
-- ✅ Roles
- 
-Autorización:
- 
-- ✅ 401 Unauthorized
-- ✅ 403 Forbidden
-- ✅ Protección de POST
-- ✅ Protección de PUT
-- ✅ Protección de DELETE
- 
-Swagger:
- 
-- ✅ Swagger UI
-- ✅ OpenAPI
-- ✅ Documentación automática de endpoints
- 
-### 🗄 Base de Datos
- 
-- PostgreSQL funcionando correctamente.
-- Supabase funcionando correctamente.
-- CRUD completamente validado.
- 
----
-
-## [1.3.0] - 2026-09-25
-
-### 🚀 Añadido
+### 🛒 Checkout
 
 #### DTOs
 
-- CreateCafeDto
-- UpdateCafeDto
-- CafeResponseDto
+- CheckoutResponseDto
 
-#### Validaciones
+#### Interfaces
 
-Implementadas mediante DataAnnotations:
-
-- Required
-- StringLength
-- Range
-
-#### Reglas de negocio
-
-Nuevo sistema de disponibilidad de stock:
-
-- Agotado
-- Pocas unidades
-- Disponible
-- Alta disponibilidad
-
-#### Información de respuesta
-
-Los endpoints GET ahora utilizan CafeResponseDto en lugar de exponer directamente la entidad Cafe.
-
-Campos añadidos:
-
-- StockDisponible
-- Disponible
-- EstadoStock
-
-### ✅ Validado
-
-POST /api/cafes
-
-- DTO de creación
-- Validaciones automáticas
-- Respuestas 400 Bad Request
-
-PUT /api/cafes/{id}
-
-- DTO de actualización
-- Validaciones automáticas
-- Respuestas 400 Bad Request
-
-GET /api/cafes
-
-- DTO de respuesta
-- Información orientada al cliente
-- Estado de stock calculado
-
-### 🏗 Arquitectura
-
-Separación completa entre:
-
-- Entidades de dominio
-- DTOs de entrada
-- DTOs de salida
-
-
-## [1.4.0] - 2026-09-25
-
-### Añadido
-
-- Middleware global de manejo de excepciones.
-- Captura centralizada de errores no controlados.
-- Respuestas JSON uniformes para errores.
-
-### Validado
-
-- Captura de excepciones mediante ExceptionMiddleware.
-- Respuestas HTTP 500 estandarizadas.
-
-### Beneficios
-
-- Menos código repetido.
-- Mejor integración con Angular.
-- API más preparada para producción.
-
-
-## [1.5.0] - 2026-09-25
- 
-### Añadido
- 
-#### Logging
- 
-Implementación de auditoría mediante ILogger.
- 
-Eventos registrados:
- 
-- Consulta de lista de cafés.
-- Consulta de café por Id.
-- Creación de cafés.
-- Actualización de cafés.
-- Eliminación de cafés.
- 
-### Validado
- 
-- LogInformation
-- LogWarning
-- Inyección de ILogger
-- Auditoría CRUD completa
- 
-### Beneficios
- 
-- Trazabilidad de operaciones.
-- Diagnóstico de incidencias.
-- Preparación para producción.
-
-## [1.5.0] - 2026-09-25
- 
-### Añadido
- 
-#### Logging
- 
-Implementación de auditoría mediante ILogger.
- 
-Se registran los siguientes eventos:
- 
-- Consulta de lista de cafés.
-- Consulta de cafés por identificador.
-- Creación de cafés.
-- Actualización de cafés.
-- Eliminación de cafés.
-- Recursos no encontrados.
-- Excepciones no controladas.
- 
-#### Middleware
- 
-Integración del middleware global de excepciones con logging.
- 
-### Validado
- 
-- LogInformation
-- LogWarning
-- LogError
-- Auditoría completa CRUD
-- Registro de errores globales
- 
-### Beneficios
- 
-- Trazabilidad de operaciones.
-- Diagnóstico de incidencias.
-- Preparación para producción.
-
-## [1.6.0] - 2026-09-25
-
-### Añadido
-
-#### DTOs de autenticación
-
-- LoginRequestDto
-- LoginResponseDto
-- UserDto
-
-### Cambios
-
-- AuthController migrado para utilizar contratos DTO.
-- Eliminados objetos de respuesta anónimos.
-- Contratos preparados para Angular.
-
-### Beneficios
-
-- Tipado fuerte.
-- Mejor integración con Swagger.
-- Contratos estables para frontend.
-- Base para futuras funcionalidades de usuario autenticado.
-
-## [1.7.0] - 2026-09-25
-
-### Añadido
-
-#### Dominio Usuario
-
-Nueva entidad:
-
-- Usuario
-
-Campos:
-
-- Id
-- Email
-- Nombre
-- Role
-- EsGoogleUser
-- FechaCreacion
-
-#### DTOs
-
-- UserDto
-
-### Arquitectura
-
-Preparación del dominio para futuras capacidades ecommerce:
-
-- Cart
-- CartItem
-- Orders
-- Users
-
-## [1.8.0] - 2026-09-25
-
-### Añadido
-
-#### Dominio Ecommerce
-
-Nueva entidad:
-
-- Cart
-
-Campos:
-
-- Id
-- UserId
-- FechaCreacion
-- FechaActualizacion
-- Estado
-
-### Arquitectura
-
-Preparación para futuras funcionalidades:
-
-- CartItem
-- Orders
-- Checkout
-- Payments
-
-## [1.8.0] - 2026-09-25
-
-### Añadido
-
-#### Dominio Ecommerce
-
-- Usuario
-- Cart
-- CartItem
-
-#### DTOs
-
-- UserDto
-- CartResponseDto
-- CartItemResponseDto
+- ICheckoutRepository
 
 #### Repositorios
 
-- ICartRepository
-- CartRepository
-
-### Arquitectura
-
-Preparación para:
-
-- Carrito de compras
-- Pedidos
-- Checkout
-- Pagos
-
-### Mejoras
-
-- Contratos asíncronos mediante Task<T>.
-
-### Arquitectura
-
-Se definió oficialmente el uso de la tabla:
-
-- public.users
-
-como origen de datos para el dominio ecommerce.
-
-La tabla:
-
-- auth.users
-
-permanece reservada para autenticación interna de Supabase.
-
-## [1.10.0] - 2026-09-26
-
-### Añadido
-
-#### Cloudinary
-
-- CloudinarySettings
-- ICloudinaryService
-- CloudinaryService
-- UploadImageDto
-- ImagesController
-
-### Catálogo
-
-- Integración de ImagenUrl en cafés.
-- Almacenamiento de imágenes mediante Cloudinary.
-- La base de datos almacena únicamente la URL.
-
-### Infraestructura
-
-- Registro de Cloudinary en Program.cs.
-- Preparado para integración con Angular.
-
----
-
-## [1.11.0] - 2026-09-26
-
-### 🚀 Añadido
-
-#### Módulo Carrito
-
-Implementación completa del primer MVP del carrito de compras.
+- CheckoutRepository
 
 #### Controladores
 
-- CartController
-
-#### DTOs
-
-- AddCartItemDto
-- UpdateCartItemDto
-- CartResponseDto
-- CartItemResponseDto
-
-#### Repositorios
-
-- ICartRepository
-- CartRepository
+- CheckoutController
 
 #### Endpoints
 
-- GET /api/cart
-- POST /api/cart/items
-- PUT /api/cart/items/{id}
-- DELETE /api/cart/items/{id}
-- DELETE /api/cart
+http
+GET /api/checkout/{orderId}
 
-### ✅ Funcionalidades
 
-#### Obtener carrito
+#### Funcionalidades
 
-Permite consultar el carrito activo asociado al usuario autenticado.
+- Resumen previo al pago
+- Obtención de productos del pedido
+- Obtención de cantidadItems
+- Obtención de total
+- Validación de estado
+- Validación de propiedad del pedido
+- Indicador PuedePagar
 
-#### Agregar productos
+---
 
-Permite agregar cafés al carrito utilizando:
+### 💳 Payments
 
-json
-{
-  "cafeId": 1,
-  "cantidad": 2
-}
+#### DTOs
+
+- PaymentRequestDto
+- PaymentResponseDto
+
+#### Interfaces
+
+- IPaymentRepository
+
+#### Repositorios
+
+- PaymentRepository
+
+#### Controladores
+
+- PaymentsController
+
+#### Endpoints
+
+http
+POST /api/payments
+
+GET /api/payments/{orderId}
+
+
+#### Funcionalidades
+
+- Creación de pagos
+- Consulta de pagos
+- Persistencia en PostgreSQL
+- Relación pedido-pago
+- Asociación por usuario
+
+---
+
+### 📦 Orders
+
+#### Mejoras
+
+- Historial de pedidos
+- Detalle individual de pedidos
+- Observaciones
+- Cantidad de productos
+- Validación de carrito vacío
+- Generación automática de order_items
+
+#### Nuevo Endpoint
+
+http
+PATCH /api/orders/{id}/status
+
+
+---
+
+### 🔄 Estados de Pedido
+
+Se incorporó soporte para:
+
+
+PendientePago
+
+Pagado
+
+EnPreparacion
+
+Enviado
+
+Entregado
+
+Cancelado
+
+
+#### DTOs
+
+- UpdateOrderStatusDto
+
+#### Repositorios
+
+- UpdateStatusAsync()
+
+#### Controladores
+
+- PATCH /api/orders/{id}/status
+
+---
+
+### 🗄 Base de Datos
+
+#### Nuevas Tablas
+
+##### payments
+
+
+id
+order_id
+user_id
+monto
+estado
+transaction_id
+fecha_creacion
+
+
+#### Relación implementada
+
+
+orders
+ ↓
+payments
+
+
+---
+
+### ✅ Validado en Postman
+
+#### Checkout
+
+http
+GET /api/checkout/{orderId}
+
+
+Validado:
+
+
+✅ JWT
+
+✅ Resumen Pedido
+
+✅ Total
+
+✅ CantidadItems
+
+✅ PuedePagar
+
+
+---
+
+#### Payments
+
+http
+POST /api/payments
+
+GET /api/payments/{orderId}
+
+
+Validado:
+
+
+✅ Persistencia PostgreSQL
+
+✅ Asociación al pedido
+
+✅ Asociación al usuario
+
+✅ Respuesta DTO
+
+
+---
+
+#### Orders
+
+http
+PATCH /api/orders/{id}/status
+
+
+Validado:
+
+
+✅ Cambio de estado
+
+✅ Seguridad JWT
+
+✅ Validación de usuario propietario
+
+
+---
+
+### 🔐 Seguridad
+
+Validaciones aplicadas en:
+
+
+Cart
+
+Orders
+
+Checkout
+
+Payments
+
+
+Mediante:
+
+
+JWT Authentication
+
+User Ownership Validation
+
+Protected Endpoints
+
+
+---
+
+### 📊 Estado del Proyecto
+
+#### Implementado
+
+
+✅ Auth
+
+✅ Users
+
+✅ Especialidades
+
+✅ Cafes
+
+✅ Images
+
+✅ Cart
+
+✅ Orders
+
+✅ Checkout
+
+✅ Payments
+
+✅ Estados de Pedido
+
+
+#### Próxima versión
+
+
+Wompi Integration
+
+Payment Webhooks
+
+Actualización automática de estados
+
+Panel Administrativo
+
+Dashboard de métricas
+
+
+---
+
+### 🎯 Hito
+
+Se completa la primera versión funcional del backend ecommerce.
+
+
+Backend Ecommerce Core
+
+█████████████████████████░ 98%

@@ -228,28 +228,34 @@ namespace CafeApi.Repositories
 
                 await transaction.CommitAsync();
 
+                var cantidadItems =
+                 items.Sum(x => x.Cantidad);
+
                 return new OrderResponseDto
                 {
                     OrderId =
-                        orderId,
+                          orderId,
 
                     UserId =
-                        userId,
+                          userId,
 
                     Estado =
                         "PendientePago",
 
                     Total =
-                        total,
+                         total,
 
                     Observaciones =
-                        observaciones,
+                          observaciones,
+
+                    CantidadItems =
+                          cantidadItems,
 
                     FechaCreacion =
-                        DateTime.UtcNow,
+                          DateTime.UtcNow,
 
                     Items =
-                        items
+                         items
                 };
             }
             catch
@@ -431,6 +437,47 @@ namespace CafeApi.Repositories
             }
 
             return response;
+
         }
+
+            // ✅ Actualizar estado del pedido.
+             public async Task<bool> UpdateStatusAsync(
+              int orderId,
+              int userId,
+              string estado)
+             {
+            await using var connection =
+                new NpgsqlConnection(_connectionString);
+
+            await connection.OpenAsync();
+
+            await using var command =
+                new NpgsqlCommand(
+                    @"UPDATE public.orders
+                    SET estado = @estado
+                    WHERE id = @orderId
+                   AND user_id = @userId;",
+                    connection);
+
+               command.Parameters.AddWithValue(
+                "estado",
+                estado);
+
+               command.Parameters.AddWithValue(
+                "orderId",
+                orderId);
+
+               command.Parameters.AddWithValue(
+                "userId",
+                userId);
+
+                var rowsAffected =
+                 await command.ExecuteNonQueryAsync();
+
+                return rowsAffected > 0;
+             }
+
+
     }
+    
 }

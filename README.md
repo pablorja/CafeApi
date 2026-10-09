@@ -1,559 +1,650 @@
 # ☕ CafeApi
 
-API REST desarrollada con ASP.NET Core 10 para la gestión de cafés y especialidades.
+API REST desarrollada con ASP.NET Core 10, PostgreSQL y Supabase para la gestión de una tienda de café de especialidad.
 
-## 🚀 Descripción
+El proyecto implementa un flujo completo de ecommerce:
 
-CafeApi es una API REST construida siguiendo una arquitectura basada en capas mediante Controllers, Interfaces y Repositories.
 
-El proyecto permite gestionar cafés y sus especialidades mediante operaciones CRUD completas y utiliza PostgreSQL alojado en Supabase como motor de base de datos.
+Autenticación
+    ↓
+Catálogo
+    ↓
+Carrito
+    ↓
+Pedido
+    ↓
+Checkout
+    ↓
+Pago
+    ↓
+Gestión de Estados
+
 
 ---
 
-## 🛠 Tecnologías Utilizadas
+# 🚀 Descripción
 
-### Backend
+CafeApi es una API REST construida siguiendo una arquitectura basada en capas mediante Controllers, Interfaces y Repositories.
+
+La aplicación permite gestionar:
+
+- Usuarios
+- Autenticación JWT
+- Especialidades
+- Cafés
+- Imágenes
+- Carrito de compras
+- Pedidos
+- Checkout
+- Pagos
+- Estados de pedidos
+
+La API utiliza PostgreSQL alojado en Supabase y Cloudinary para el almacenamiento de imágenes.
+
+---
+
+# 🛠 Tecnologías Utilizadas
+
+## Backend
 
 - ASP.NET Core 10
 - C#
 - REST API
 - JWT Authentication
+- Swagger
+- OpenAPI
 
-### Base de Datos
+## Base de Datos
 
 - PostgreSQL
 - Supabase
 - Npgsql
 
-### Herramientas
+## Almacenamiento
+
+- Cloudinary
+
+## Herramientas
 
 - Visual Studio
 - VS Code
+- Postman
 - Git
 - GitHub
-- Postman
 
 ---
 
-## 📁 Estructura del Proyecto
+# 🏗 Arquitectura
 
-```text
+
 CafeApi
 │
 ├── Controllers
+├── DTOs
 ├── Interfaces
+├── Middleware
 ├── Models
 ├── Repositories
+├── Services
+├── Configurations
 ├── Properties
-├── database
 │
 ├── Program.cs
 ├── appsettings.json
-├── appsettings.Development.json
 ├── README.md
 └── CHANGELOG.md
-```
+
+
+Arquitectura utilizada:
+
+
+Controller
+    ↓
+Interface
+    ↓
+Repository
+    ↓
+PostgreSQL
+
 
 ---
 
-## 🗄️ Configuración de Base de Datos
+# 🗄️ Configuración de Base de Datos
 
-```text
+
 Motor     : PostgreSQL
 Proveedor : Supabase
 Conector  : Npgsql
 Puerto    : 5432
-```
 
-### Diagnóstico de conexión
-
-La aplicación muestra durante el arranque:
-
-```text
-========================================
-Entorno       : Development
-Base de Datos : PostgreSQL (Supabase)
-Puerto        : 5432
-========================================
-```
-
-Esto permite verificar la configuración sin exponer credenciales.
 
 ---
 
-## ✅ Funcionalidades Implementadas
+# 📊 Modelo de Datos
 
-### Cafés
+Tablas implementadas:
 
-- Obtener todos los cafés
-- Obtener un café por Id
-- Crear un café
-- Actualizar un café
-- Eliminar un café
 
-### Especialidades
+users
 
-- Obtener especialidades
+especialidades
+
+cafes
+
+carts
+
+cart_items
+
+orders
+
+order_items
+
+payments
+
 
 ---
 
-## 📡 Endpoints
+# 🔐 Seguridad
 
-### Cafés
+La API utiliza autenticación basada en JWT.
 
-#### Obtener 
+## Roles
 
-## Seguridad
+### Administrador
 
-### JWT Authentication
-
-El sistema implementa autenticación mediante JSON Web Tokens (JWT).
-
-### Roles
-
-#### Administrador
-
-- Crear cafés
-- Actualizar cafés
-- Eliminar cafés
-
-#### Cliente
-
-- Consultar cafés
-- Crear cafés
-- Sin permisos de modificación o eliminación
-
-## 🔐 Seguridad
- 
-### JWT Authentication
- 
-La API utiliza JSON Web Tokens (JWT) para proteger los endpoints que modifican datos.
- 
-### Roles
- 
-#### Administrador
- 
 Permisos:
- 
-- Crear cafés
-- Actualizar cafés
-- Eliminar cafés
- 
-#### Cliente
- 
+
+
+Crear cafés
+Actualizar cafés
+Eliminar cafés
+Gestionar catálogo
+
+
+### Cliente
+
 Permisos:
- 
-- Consultar cafés
-- Crear cafés
- 
-Restricciones:
- 
-- No puede actualizar cafés
-- No puede eliminar cafés
- 
----
- 
-## ✅ Endpoints
- 
-### Auth
- 
-```http
-POST /api/auth/login
-POST /api/auth/google
-```
- 
-### Cafés
- 
-```http
-GET /api/cafes
-GET /api/cafes/{id}
-POST /api/cafes
-PUT /api/cafes/{id}
-DELETE /api/cafes/{id}
-```
- 
-### Especialidades
- 
-```http
-GET /api/especialidades
-```
- 
----
- 
-## 📖 Documentación
- 
-Swagger disponible en:
- 
-```text
-/swagger
-```
- 
-OpenAPI JSON:
- 
-```text
-/openapi/v1.json
-```
- 
----
- 
-## ✅ Estado Actual
- 
-### Base de Datos
- 
-- ✅ PostgreSQL
-- ✅ Supabase
-- ✅ Npgsql
- 
-### API
- 
-- ✅ CRUD Cafés
-- ✅ CRUD Especialidades
- 
-### Seguridad
- 
-- ✅ JWT Authentication
-- ✅ Authorization
-- ✅ Roles Administrador y Cliente
- 
-### Documentación
- 
-- ✅ OpenAPI
-- ✅ Swagger UI
- 
----
- 
-## 🚧 Próximos Pasos
- 
-- Integración completa JWT en Swagger (Authorize)
-- Login con Google
-- Angular Frontend
-- Deploy
- 
+
+
+Consultar cafés
+Gestionar carrito
+Crear pedidos
+Realizar pagos
+Consultar historial
+
+
 ---
 
-## DTOs y Validaciones
+# ✅ Módulos Implementados
 
-La API implementa DTOs para separar los modelos de entrada y salida de las entidades de base de datos.
+## Auth
 
-### DTOs de Entrada
-
-#### CreateCafeDto
-
-Utilizado para la creación de cafés.
-
-Validaciones:
-
-- Especialidad obligatoria.
-- Nombre obligatorio.
-- Origen obligatorio.
-- Stock mayor o igual a cero.
-- Precio mayor que cero.
-
-#### UpdateCafeDto
-
-Utilizado para la actualización de cafés.
-
-Validaciones:
-
-- Especialidad obligatoria.
-- Nombre obligatorio.
-- Origen obligatorio.
-- Stock mayor o igual a cero.
-- Precio mayor que cero.
-
-### DTOs de Respuesta
-
-#### CafeResponseDto
-
-Expone información orientada al cliente:
-
-- Id
-- Especialidad
-- Nombre
-- Origen
-- StockDisponible
-- Disponible
-- EstadoStock
-- Precio
-
-### Estado de Stock
-
-La API calcula automáticamente el estado del inventario:
-
-| Stock | Estado |
-|---------|---------|
-| 0 | Agotado |
-| 1 - 10 | Pocas unidades |
-| 11 - 50 | Disponible |
-| 51+ | Alta disponibilidad |
-
-### Beneficios
-
-- Validación automática mediante DataAnnotations.
-- Separación entre entidades y contratos de API.
-- No se exponen propiedades internas innecesarias.
-- Respuestas orientadas al negocio.
- 
-## Manejo Global de Errores
- 
-La API implementa un middleware global de excepciones.
- 
-Todas las excepciones no controladas son interceptadas y transformadas en respuestas JSON uniformes.
- 
-Ejemplo:
- 
-```json
-{
-"success": false,
-"message": "Ha ocurrido un error inesperado.",
-"detail": "Descripción del error"
-}
-
-## Logging y Auditoría
- 
-La API implementa logging mediante ILogger de ASP.NET Core.
- 
-### Operaciones auditadas
- 
-- Consulta de todos los cafés.
-- Consulta de cafés por identificador.
-- Creación de cafés.
-- Actualización de cafés.
-- Eliminación de cafés.
- 
-### Beneficios
- 
-- Seguimiento de operaciones.
-- Diagnóstico de incidencias.
-- Auditoría de actividad.
-- Preparación para producción.
-
-## Logging y Auditoría
- 
-La API implementa auditoría mediante ILogger de ASP.NET Core.
- 
-### Eventos registrados
- 
-#### Consultas
- 
-- Listado de cafés.
-- Consulta por identificador.
- 
-#### Escritura
- 
-- Creación de registros.
-- Actualización de registros.
-- Eliminación de registros.
- 
-#### Errores
- 
-- Recursos inexistentes.
-- Excepciones capturadas por el middleware global.
- 
-### Beneficios
- 
-- Seguimiento de operaciones.
-- Diagnóstico de fallos.
-- Trazabilidad.
-- Base para despliegues productivos.
-
-## DTOs de Autenticación
-
-La API implementa contratos específicos para autenticación.
-
-### LoginRequestDto
-
-Utilizado para recibir credenciales:
-
-```json
-{
-  "email": "admin@cafeapi.com",
-  "password": "123456"
-}
-```
-
-### LoginResponseDto
-
-Devuelto tras una autenticación exitosa:
-
-```json
-{
-  "token": "jwt",
-  "email": "admin@cafeapi.com",
-  "role": "Administrador"
-}
-```
-
-### UserDto
-
-Representa la información del usuario autenticado:
-
-```json
-{
-  "id": 1,
-  "email": "admin@cafeapi.com",
-  "nombre": "Administrador",
-  "role": "Administrador"
-}
-```
-
-## Dominio de Usuario
-
-Se ha incorporado la entidad Usuario como base para la evolución de CafeApi hacia ecommerce.
-
-### Usuario
-
-Representa a un usuario autenticado dentro del sistema.
-
-Campos actuales:
-
-- Id
-- Email
-- Nombre
-- Role
-- EsGoogleUser
-- FechaCreacion
-
-### Objetivo
-
-Preparar futuras funcionalidades:
-
-- Carrito de compras.
-- Pedidos.
-- Historial de compras.
-- Direcciones de envío.
-- Integración con Google Login.
-
-## Dominio Ecommerce
-
-### Cart
-
-Representa el carrito activo de un usuario.
-
-Campos:
-
-- Id
-- UserId
-- FechaCreacion
-- FechaActualizacion
-- Estado
-
-Estados previstos:
-
-- Activo
-- ConvertidoAPedido
-- Cancelado
-- Abandonado
-
-Objetivo:
-
-- Gestionar el carrito de compras.
-- Preparar futuras funcionalidades de pedidos y pagos.
-## Dominio Ecommerce
-
-### Usuario
-
-Entidad base para autenticación y futuras funcionalidades ecommerce.
-
-### Cart
-
-Representa el carrito activo de un usuario.
-
-### CartItem
-
-Representa una línea del carrito.
-
-### DTOs de Carrito
-
-#### CartItemResponseDto
-
-- CafeId
-- CafeNombre
-- ImagenUrl
-- Precio
-- Cantidad
-- Subtotal
-
-#### CartResponseDto
-
-- CartId
-- UserId
-- Items
-- CantidadItems
-- Total
-
-## Persistencia de usuarios
-
-CafeApi utiliza la tabla:
-
-public.users
-
-para representar los usuarios del dominio de negocio.
-
-Nota:
-
-Supabase mantiene adicionalmente la tabla:
-
-auth.users
-
-para servicios internos de autenticación.
-
-El carrito, pedidos y futuras funcionalidades ecommerce utilizarán:
-
-public.users
-
-## Gestión de imágenes
-
-CafeApi utiliza Cloudinary para el almacenamiento de imágenes.
-
-Flujo:
-
-Cliente
-↓
-POST /api/images
-↓
-Cloudinary
-↓
-URL
-↓
-POST /api/cafes
-
-La base de datos únicamente almacena la URL de la imagen.
-
-## 🛒 Módulo de Carrito
-
-El sistema incluye un carrito de compras persistente asociado a cada usuario autenticado.
-
-### Funcionalidades implementadas
-
-✅ Obtener carrito actual
-
-✅ Agregar productos al carrito
-
-✅ Actualizar cantidad de productos
-
-✅ Eliminar un producto específico
-
-✅ Vaciar completamente el carrito
-
-✅ Cálculo automático de subtotales
-
-✅ Cálculo automático del total
-
-✅ Validación de stock disponible
-
-✅ Protección mediante JWT
-
-✅ Validación de propiedad del carrito
+Autenticación de usuarios.
 
 ### Endpoints
 
-#### Obtener carrito
+http
+POST /api/auth/register
+
+POST /api/auth/login
+
+
+### Funcionalidades
+
+
+Registro
+
+Login
+
+JWT
+
+Validación de credenciales
+
+
+---
+
+## Users
+
+Gestión de usuarios del dominio de negocio.
+
+### Funcionalidades
+
+
+Roles
+
+Usuarios autenticados
+
+Integración JWT
+
+
+---
+
+## Especialidades
+
+CRUD de especialidades.
+
+### Endpoints
 
 http
-GET /api/cart
+GET    /api/especialidades
+
+POST   /api/especialidades
+
+PUT    /api/especialidades/{id}
+
+DELETE /api/especialidades/{id}
 
 
-## 👨‍💻 Autor
- 
-Pablo Santamaría
+---
+
+## Cafés
+
+CRUD completo de productos.
+
+### Endpoints
+
+http
+GET    /api/cafes
+
+GET    /api/cafes/{id}
+
+POST   /api/cafes
+
+PUT    /api/cafes/{id}
+
+DELETE /api/cafes/{id}
+
+
+### Funcionalidades
+
+
+Catálogo
+
+Control de stock
+
+Imágenes
+
+Especialidades
+
+
+---
+
+## Imágenes
+
+Almacenamiento mediante Cloudinary.
+
+### Endpoint
+
+http
+POST /api/images/upload
+
+
+### Flujo
+
+
+Cliente
+ ↓
+Cloudinary
+ ↓
+URL
+ ↓
+PostgreSQL
+
+
+---
+
+## 🛒 Cart
+
+Gestión completa del carrito de compras.
+
+### Endpoints
+
+http
+GET    /api/cart
+
+POST   /api/cart/items
+
+PUT    /api/cart/items/{id}
+
+DELETE /api/cart/items/{id}
+
+
+### Funcionalidades
+
+
+Agregar productos
+
+Modificar cantidades
+
+Eliminar productos
+
+Vaciar carrito
+
+Calcular subtotales
+
+Calcular total
+
+Validar stock
+
+Seguridad por usuario
+
+
+---
+
+## 📦 Orders
+
+Conversión de carrito a pedido.
+
+### Endpoints
+
+http
+POST /api/orders
+
+GET /api/orders
+
+GET /api/orders/{id}
+
+PATCH /api/orders/{id}/status
+
+
+### Funcionalidades
+
+
+Crear pedido
+
+Historial
+
+Detalle de pedido
+
+Order Items
+
+Observaciones
+
+Estados
+
+
+### Estados disponibles
+
+
+PendientePago
+
+Pagado
+
+EnPreparacion
+
+Enviado
+
+Entregado
+
+Cancelado
+
+
+---
+
+## 💳 Checkout
+
+Resumen previo al pago.
+
+### Endpoint
+
+http
+GET /api/checkout/{orderId}
+
+
+### Información
+
+
+Pedido
+
+Items
+
+CantidadItems
+
+Total
+
+Observaciones
+
+Estado
+
+PuedePagar
+
+
+---
+
+## 💰 Payments
+
+Gestión de pagos.
+
+### Endpoints
+
+http
+POST /api/payments
+
+GET /api/payments/{orderId}
+
+
+### Funcionalidades
+
+
+Crear pago
+
+Persistir pago en PostgreSQL
+
+Consultar pago
+
+Relación Pedido-Pago
+
+
+---
+
+# 🔄 Flujo Ecommerce
+
+
+Login
+ ↓
+Catálogo
+ ↓
+Carrito
+ ↓
+Pedido
+ ↓
+Checkout
+ ↓
+Pago
+ ↓
+Actualización Estado Pedido
+
+
+---
+
+# 📡 Resumen de Endpoints
+
+## Auth
+
+http
+POST /api/auth/register
+
+POST /api/auth/login
+
+
+---
+
+## Cafés
+
+http
+GET    /api/cafes
+
+GET    /api/cafes/{id}
+
+POST   /api/cafes
+
+PUT    /api/cafes/{id}
+
+DELETE /api/cafes/{id}
+
+
+---
+
+## Especialidades
+
+http
+GET    /api/especialidades
+
+POST   /api/especialidades
+
+PUT    /api/especialidades/{id}
+
+DELETE /api/especialidades/{id}
+
+
+---
+
+## Cart
+
+http
+GET    /api/cart
+
+POST   /api/cart/items
+
+PUT    /api/cart/items/{id}
+
+DELETE /api/cart/items/{id}
+
+
+---
+
+## Orders
+
+http
+POST   /api/orders
+
+GET    /api/orders
+
+GET    /api/orders/{id}
+
+PATCH  /api/orders/{id}/status
+
+
+---
+
+## Checkout
+
+http
+GET /api/checkout/{orderId}
+
+
+---
+
+## Payments
+
+
+POST /api/payments
+
+GET /api/payments/{orderId}
+
+
+---
+
+# 🧪 Testing
+
+La API dispone de colección Postman completa.
+
+Módulos probados:
+
+
+✅ Auth
+
+✅ Users
+
+✅ Especialidades
+
+✅ Cafes
+
+✅ Images
+
+✅ Cart
+
+✅ Orders
+
+✅ Checkout
+
+✅ Payments
+
+✅ Order Status
+
+
+---
+
+# 📖 Documentación
+
+Swagger disponible en:
+
+
+/swagger
+
+
+OpenAPI:
+
+
+/openapi/v1.json
+
+
+---
+
+# 🚧 Roadmap
+
+Próximas funcionalidades:
+
+
+Integración Wompi
+
+Webhooks
+
+Dashboard administrativo
+
+Notificaciones
+
+Métricas y reportes
+
+
+---
+
+# 📈 Estado del Proyecto
+
+Backend Ecommerce:
+
+
+✅ Auth
+
+✅ Users
+
+✅ Especialidades
+
+✅ Cafes
+
+✅ Images
+
+✅ Cart
+
+✅ Orders
+
+✅ Checkout
+
+✅ Payments
+
+✅ Estados de Pedido
+
+
+Progreso aproximado:
+
+
+█████████████████████████░ 98%
+
+
+---
+
+# 👨‍💻 Autor
+
+**Pablo Santamaría**
+
+Proyecto desarrollado como plataforma ecommerce para café de especialidad utilizando ASP.NET Core, PostgreSQL, Supabase y Cloudinary.

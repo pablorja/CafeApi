@@ -137,5 +137,55 @@ namespace CafeApi.Controllers
 
             return Ok(order);
         }
+        // ✅ Actualizar estado del pedido.
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(
+            int id,
+            [FromBody] UpdateOrderStatusDto dto)
+        {
+            var email =
+                User.FindFirstValue(
+                    ClaimTypes.Email);
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return Unauthorized(
+                    "No fue posible obtener el correo del token.");
+            }
+
+            var user =
+                await _userRepository
+                    .GetByEmailAsync(email);
+
+            if (user == null)
+            {
+                return NotFound(
+                    "Usuario no encontrado.");
+            }
+
+            var updated =
+                await _orderRepository
+                    .UpdateStatusAsync(
+                        id,
+                        user.Id,
+                        dto.Estado);
+
+            if (!updated)
+            {
+                return NotFound(
+                    "Pedido no encontrado.");
+            }
+
+            return Ok(
+                new
+                {
+                    message =
+                        "Estado actualizado correctamente.",
+                    orderId =
+                        id,
+                    estado =
+                        dto.Estado
+                });
+        }
     }
 }

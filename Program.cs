@@ -68,6 +68,9 @@ builder.Services.AddScoped<IEspecialidadRepository>(_ =>
 builder.Services.AddScoped<ICafeRepository>(_ =>
     new CafeRepository(connectionString));
 
+builder.Services.AddScoped<IPaymentRepository>(_ =>
+    new PaymentRepository(connectionString));
+
 // ✅ Registro del servicio Cloudinary.
 builder.Services.AddScoped<
 ICloudinaryService,
@@ -164,6 +167,11 @@ builder.Services.AddScoped<IUserRepository>(_ =>
 
 builder.Services.AddScoped<IOrderRepository>(_ =>
     new OrderRepository(connectionString));
+
+builder.Services.AddScoped<ICheckoutRepository>(_ =>
+    new CheckoutRepository(connectionString));
+
+
 
 // ✅ Conservamos OpenAPI nativo.
 builder.Services.AddOpenApi();
